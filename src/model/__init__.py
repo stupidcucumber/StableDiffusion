@@ -1,1 +1,1 @@
-from .utils import load_models
+from .diffusion import Pipeline 

@@ -1,6 +1,5 @@
 import argparse, pathlib
-import yaml
-from src.model import load_models
+from src.model import Pipeline
 
 
 def parse_arguments():
@@ -18,4 +17,4 @@ def parse_arguments():
 
 if __name__ == '__main__':
     args = parse_arguments()
-    models = load_models(config_path=args.config, device=args.device)
+    models = Pipeline(config_path=args.config, device=args.device)
