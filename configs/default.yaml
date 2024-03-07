@@ -1,0 +1,21 @@
+stable-diffusion-2:
+  vae:
+    classname: AutoencoderKL
+    hub: stabilityai/stable-diffusion-2
+    subfolder: vae
+  unet:
+    classname: UNet2DConditionModel
+    hub: stabilityai/stable-diffusion-2
+    subfolder: unet
+  scheduler:
+    classname: DDIMScheduler
+    hub: DDIMScheduler
+    subfolder: scheduler
+  tokenizer:
+    classname: CLIPTokenizer
+    hub: stabilityai/stable-diffusion-2
+    subfolder: tokenizer
+  text_encoder: 
+    classname: CLIPTextModel
+    hub: stabilityai/stable-diffusion-2
+    subfolder: text_encoder

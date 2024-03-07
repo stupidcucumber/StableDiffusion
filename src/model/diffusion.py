@@ -1,5 +1,3 @@
 import torch
-
-
-class StableDiffusion(torch.nn.Module):
-    pass
+import pathlib
+from .utils import load_model

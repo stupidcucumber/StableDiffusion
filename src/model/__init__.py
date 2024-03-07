@@ -1,1 +1,1 @@
-from .diffusion import StableDiffusion
+from .utils import load_models

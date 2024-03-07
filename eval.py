@@ -1,6 +1,6 @@
 import argparse, pathlib
-from src.model import StableDiffusion
-from src.decoder import StableDiffusionDecoder
+import yaml
+from src.model import load_models
 
 
 def parse_arguments():
@@ -9,12 +9,13 @@ def parse_arguments():
                         help='Text prompt to the diffusion model.')
     parser.add_argument('-n', type=int, default=1,
                         help='Number of examples to generate.')
-    parser.add_argument('--weights', type=pathlib.Path, default=None,
-                        help='Path to the weights of the generating model.')
+    parser.add_argument('--config', type=pathlib.Path, default=None,
+                        help='Path to the config of the generating model.')
+    parser.add_argument('-d', '--device', type=str, default='cpu',
+                        help='Device on which model and inputs will be located.')
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = parse_arguments()
-
-    model = StableDiffusion()
+    models = load_models(config_path=args.config, device=args.device)
