@@ -9,7 +9,7 @@ stable-diffusion-2:
     subfolder: unet
   scheduler:
     classname: DDIMScheduler
-    hub: DDIMScheduler
+    hub: stabilityai/stable-diffusion-2
     subfolder: scheduler
   tokenizer:
     classname: CLIPTokenizer

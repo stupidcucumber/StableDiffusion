@@ -1,5 +1,5 @@
 import torch
-import pathlib, sys
+import pathlib, logging
 from diffusers import (
     DDIMScheduler, 
     AutoencoderKL, 
@@ -12,6 +12,9 @@ from transformers import (
 import yaml
 
 
+logger = logging.getLogger('model/utils')
+
+
 _models = {
     'DDIMScheduler': DDIMScheduler,
     'AutoencoderKL': AutoencoderKL,
@@ -22,10 +25,14 @@ _models = {
 
 
 def _load_module(module_config: dict, device: str = 'cpu') -> torch.nn.Module:
+    print('Start loading model %s' % module_config['classname'])
     model_class = _models[module_config['classname']]
     model = model_class.from_pretrained(module_config['hub'], 
                                         subfolder=module_config['subfolder'])
-    model.to(device)
+    try:
+        model.to(device)
+    except Exception as e:
+        print('Error caught while moving to the device: ', e)
     return model
 
 
