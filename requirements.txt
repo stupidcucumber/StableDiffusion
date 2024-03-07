@@ -3,3 +3,4 @@ diffusers
 opencv-python
 opencv-contrib-python
 robustprinter
+accelerate
