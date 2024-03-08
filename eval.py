@@ -1,5 +1,7 @@
 import argparse, pathlib
+import torch
 from src.model import Pipeline
+from diffusers import StableDiffusionPipeline
 
 
 def parse_arguments():
@@ -17,4 +19,12 @@ def parse_arguments():
 
 if __name__ == '__main__':
     args = parse_arguments()
-    models = Pipeline(config_path=args.config, device=args.device)
+    model = Pipeline(config=args.config, device=args.device)
+    pipeline = StableDiffusionPipeline(vae=model.vae, text_encoder=model.text_encoder, 
+                                       tokenizer=model.tokenizer, unet=model.unet,
+                                       scheduler=model.scheduler, safety_checker=None,
+                                        feature_extractor=None, requires_safety_checker=False)
+    pipeline.to(args.device)
+    generator = torch.Generator(args.device).manual_seed(0)
+    image = pipeline(prompt=args.prompt, generator=generator).images[0]
+    print(image.save('output.png'))
