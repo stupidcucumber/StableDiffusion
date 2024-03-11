@@ -1,5 +1,7 @@
 torch
 diffusers
+pandas
+numpy
 transformers
 opencv-python
 opencv-contrib-python
