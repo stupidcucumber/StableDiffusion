@@ -8,3 +8,4 @@ COPY requirements.txt ./
 RUN pip3 install --no-cache -r requirements.txt
 
 COPY . ./
+CMD ["python", "generate.py", "--input-dir", "input", "-ip", "A gemily woman.", "-cp", "A woman.", "-d", "cuda:0", "--output-dir", "runs/output"]

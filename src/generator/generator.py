@@ -33,8 +33,8 @@ class Generator:
                 image = self.pipeline(prompt=prompt, generator=generator).images[0]
             else:
                 image = Image.open(input[index])
-                save_path = output.joinpath('image_%d.png' % index)
-                image.save(save_path)
+            save_path = output.joinpath('image_%d.png' % index)
+            image.save(save_path)
             result.append({
                     'image_path': save_path,
                     'prompt': prompt,

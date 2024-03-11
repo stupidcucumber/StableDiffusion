@@ -10,9 +10,9 @@ def parse_arguments():
                         help='Path to the directory containing instance images.')
     parser.add_argument('-c', '--config', type=pathlib.Path, default=pathlib.Path('configs', 'default.yaml'),
                         help='Config file of the model pipeline.')
-    parser.add_argument('--instance-prompt', type=str, required=True,
+    parser.add_argument('-ip', '--instance-prompt', type=str, required=True,
                         help='Prompt to the images of your instance.')
-    parser.add_argument('--class-prompt', type=str, required=True,
+    parser.add_argument('-cp', '--class-prompt', type=str, required=True,
                         help='Prompt from which to generate images of the class instances.')
     parser.add_argument('--ratio', type=float, default=100,
                         help='Ratio between class images and instance images. As a default it will,' +
