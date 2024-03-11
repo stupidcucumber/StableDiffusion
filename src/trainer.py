@@ -1,17 +1,23 @@
-import torch
+import torch, pathlib
 from torch.utils.data import DataLoader
 from robustprinter import Printer
 from robustprinter.formatter import DefaultFormatter
+from .model import Pipeline
 
 
 class Trainer:
-    def __init__(self, model: torch.nn.Module, optimizer: torch.optim) -> None:
+    def __init__(self, model: Pipeline, optimizer: torch.optim,
+                 output_dir: pathlib.Path) -> None:
         self.model = model
         self.model.eval()
         self.optimizer = optimizer
         self.rprinter = Printer(formatter=DefaultFormatter(max_columns=1, precision=4))
+        self.output_dir = output_dir
 
-    def _train_step(self, loss):
+    def _setup_output_dir(self) -> None:
+        self.output_dir.mkdir(parents=False)
+
+    def _train_step(self, loss) -> None:
         self.model.train()
         self.optimizer.zero_grad()
         loss.backward()
@@ -44,5 +50,6 @@ class Trainer:
         for epoch in range(epochs):
             self._epoch_pass(epoch=epoch, dataloader=train_loader, partition='train')
             self.rprinter.break_loop()
+            self.model.save(output_dir=self.output_dir)
         print('Ended training. Saving weights...')
             

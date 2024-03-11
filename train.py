@@ -18,6 +18,8 @@ def parse_arguments():
                         help='Device on which model and dataset will be placed on.')
     parser.add_argument('--batch-size', type=int, default=12,
                         help='Batchsize for the StableDiffusion')
+    parser.add_argument('--output', type=pathlib.Path, default='runs/run_0',
+                        help='Path to the output folder, where all the weights will be contained.')
     return parser.parse_args()
 
 
@@ -36,6 +38,7 @@ if __name__ == '__main__':
     optimizer = torch.optim.Adam(params=model.parameters(), lr=0.01)
     trainer = Trainer(
         model=model, 
-        optimizer=optimizer
+        optimizer=optimizer,
+        
     )
     trainer.fit()

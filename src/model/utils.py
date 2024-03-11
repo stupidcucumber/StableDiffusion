@@ -72,7 +72,7 @@ def get_target(scheduler, noise, latents, timesteps):
     raise ValueError(f"Unknown prediction type {pred_type}")
 
 
-def prior_preserving_loss(model_pred, target, weight):
+def prior_preserving_loss(model_pred, target, weight) -> torch.Tensor:
     # Chunk the noise and model_pred into two parts and compute
     # the loss on each part separately.
     model_pred, model_pred_prior = torch.chunk(model_pred, 2, dim=0)

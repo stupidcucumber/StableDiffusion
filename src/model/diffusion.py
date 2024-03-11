@@ -19,17 +19,6 @@ class Pipeline(torch.nn.Module):
         self.device = device
         self.train()
 
-    def train(self) -> None:
-        self.unet.train()
-        self.text_encoder.train()
-
-    def eval(self) -> None:
-        self.unet.eval()
-        self.text_encoder.eval()
-
-    def parameters(self):
-        return itertools.chain(self.unet.parameters(), self.text_encoder.parameters())
-
     def _tokenize(self, strings: list[str]) -> np.ndarray:
         return self.tokenizer(
             strings,
@@ -42,7 +31,28 @@ class Pipeline(torch.nn.Module):
     def _to_latent(self, tensor: torch.Tensor):
         return self.vae.encode(tensor).latent_dist.sample() * 0.18215
 
-    def forward(self, input: tuple[torch.Tensor, torch.Tensor]) -> cv2.Mat:
+    def train(self) -> None:
+        self.unet.train()
+        self.text_encoder.train()
+
+    def eval(self) -> None:
+        self.unet.eval()
+        self.text_encoder.eval()
+
+    def parameters(self) -> None:
+        return itertools.chain(self.unet.parameters(), self.text_encoder.parameters())
+    
+    def save(self, output_dir: pathlib.Path) -> None:
+        torch.save(
+            obj=self.unet,
+            f=str(output_dir.joinpath('unet.pt'))
+        )
+        torch.save(
+            obj=self.text_encoder,
+            f=output_dir.joinpath('text_encoder.pt')
+        )
+
+    def forward(self, input: tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
         '''
             :input param: accepts tuple, where on the index 0 are placed tokenized prompts and
         on the index 1 are placed processed images.
