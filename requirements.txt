@@ -1,5 +1,6 @@
 torch
 diffusers
+transformers
 opencv-python
 opencv-contrib-python
 robustprinter
