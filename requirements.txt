@@ -4,3 +4,4 @@ opencv-python
 opencv-contrib-python
 robustprinter
 accelerate
+Pillow

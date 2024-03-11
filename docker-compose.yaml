@@ -1,0 +1,22 @@
+services:
+  model-svc:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - runs:/app/runs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  runs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "$PWD/runs"
