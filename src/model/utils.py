@@ -47,3 +47,10 @@ def load_models(config_path: pathlib.Path, device: str = 'cpu') -> dict[torch.nn
         module_config = modules[module_name]
         result[module_name] = _load_module(module_config=module_config, device=device)
     return result
+
+
+def generate_gaussian_noise(shape: tuple, device: str, generator: torch.Generator | None = None) -> torch.Tensor:
+    return torch.randn(
+        size=(1, *shape),
+        generator=generator
+    ).to(device)
