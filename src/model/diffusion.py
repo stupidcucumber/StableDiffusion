@@ -10,6 +10,7 @@ from .utils import (
 
 class Pipeline(torch.nn.Module):
     def __init__(self, config: pathlib.Path, device: str = 'cpu') -> None:
+        super(Pipeline, self).__init__()
         models = load_models(config_path=config, device=device)
         self.vae = models['vae']
         self.unet = models['unet']
