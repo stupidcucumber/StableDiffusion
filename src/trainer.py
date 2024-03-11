@@ -5,12 +5,10 @@ from robustprinter.formatter import DefaultFormatter
 
 
 class Trainer:
-    def __init__(self, model: torch.nn.Module, optimizer: torch.optim,
-                 loss_fn) -> None:
+    def __init__(self, model: torch.nn.Module, optimizer: torch.optim) -> None:
         self.model = model
         self.model.eval()
         self.optimizer = optimizer
-        self.loss_fn = loss_fn
         self.rprinter = Printer(formatter=DefaultFormatter(max_columns=1, precision=4))
 
     def _train_step(self, loss):
@@ -46,6 +44,5 @@ class Trainer:
         for epoch in range(epochs):
             self._epoch_pass(epoch=epoch, dataloader=train_loader, partition='train')
             self.rprinter.break_loop()
-
         print('Ended training. Saving weights...')
             
