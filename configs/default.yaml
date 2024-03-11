@@ -3,10 +3,12 @@ stable-diffusion-2:
     classname: AutoencoderKL
     hub: stabilityai/stable-diffusion-2
     subfolder: vae
+    train: false
   unet:
     classname: UNet2DConditionModel
     hub: stabilityai/stable-diffusion-2
     subfolder: unet
+    train: true
   scheduler:
     classname: DDIMScheduler
     hub: stabilityai/stable-diffusion-2
@@ -19,3 +21,4 @@ stable-diffusion-2:
     classname: CLIPTextModel
     hub: stabilityai/stable-diffusion-2
     subfolder: text_encoder
+    train: true

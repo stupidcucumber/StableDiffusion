@@ -33,6 +33,13 @@ def _load_module(module_config: dict, device: str = 'cpu') -> torch.nn.Module:
         model.to(device)
     except Exception as e:
         print('Error caught while moving to the device: ', e)
+    if module_config.get('train') is not None:
+        try:
+            model.requires_grad_(module_config['train'])
+            print('%s model set requires grad to %s' % 
+                  (module_config['classname'], module_config['train']))
+        except Exception as e:
+            print('Error while setting requires grad.')
     return model
 
 
@@ -54,3 +61,30 @@ def generate_gaussian_noise(shape: tuple, device: str, generator: torch.Generato
         size=(1, *shape),
         generator=generator
     ).to(device)
+
+
+def get_target(scheduler, noise, latents, timesteps):
+    pred_type = scheduler.config.prediction_type
+    if pred_type == "epsilon":
+        return noise
+    if pred_type == "v_prediction":
+        return scheduler.get_velocity(latents, noise, timesteps)
+    raise ValueError(f"Unknown prediction type {pred_type}")
+
+
+def prior_preserving_loss(model_pred, target, weight):
+    # Chunk the noise and model_pred into two parts and compute
+    # the loss on each part separately.
+    model_pred, model_pred_prior = torch.chunk(model_pred, 2, dim=0)
+    target, target_prior = torch.chunk(target, 2, dim=0)
+
+    # Compute instance loss
+    loss = torch.functional.F.mse_loss(model_pred.float(), target.float(), reduction="mean")
+
+    # Compute prior loss
+    prior_loss = torch.functional.F.mse_loss(
+        model_pred_prior.float(), target_prior.float(), reduction="mean"
+    )
+
+    # Add the prior loss to the instance loss.
+    return loss + weight * prior_loss
