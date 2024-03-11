@@ -39,6 +39,6 @@ if __name__ == '__main__':
     trainer = Trainer(
         model=model, 
         optimizer=optimizer,
-        
+        output_dir=args.output
     )
     trainer.fit()
