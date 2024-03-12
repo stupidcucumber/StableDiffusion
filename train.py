@@ -43,4 +43,4 @@ if __name__ == '__main__':
         optimizer=optimizer,
         output_dir=args.output
     )
-    trainer.fit()
+    trainer.fit(epochs=args.epochs, train_loader=dataloader)
