@@ -74,7 +74,7 @@ class Pipeline(torch.nn.Module):
             noisy_latents.to(self.device),
             timesteps.to(self.device),
             encoder_hidden_states.to(self.device)
-        )
+        ).sample
         target = get_target(scheduler=self.scheduler, noise=noise,
                             latents=latents, timesteps=timesteps)
         return prior_preserving_loss(
