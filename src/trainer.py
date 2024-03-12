@@ -39,6 +39,7 @@ class Trainer:
         data['max_steps'] = len(dataloader)
         data['epoch'] = epoch
         data['partition'] = partition
+        data['metrics'] = dict()
         for index, (images, prompts) in enumerate(dataloader):
             metrics = dict()
             data['step'] = index
@@ -49,7 +50,7 @@ class Trainer:
             else:
                 loss = self._val_step(loss=loss)
             metrics['loss'] = loss
-            metrics.update(data)
+            data['metrics'].update(metrics)
             self.rprinter.print(data=data)
 
     def fit(self, epochs: int, train_loader: DataLoader) -> None:
