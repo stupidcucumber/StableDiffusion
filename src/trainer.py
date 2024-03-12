@@ -28,9 +28,10 @@ class Trainer:
         self.model.eval()
         return loss
     
-    def _move_to_device(self, tensors: list[torch.Tensor]) -> None:
+    def _move_to_device(self, tensors: list[torch.Tensor]) -> list[torch.Tensor]:
         for tensor in tensors:
             tensor.to(self.device)
+        return tensors
 
     def _epoch_pass(self, epoch: int, dataloader: DataLoader, partition: str = 'train') -> None:
         data = dict()
@@ -40,7 +41,7 @@ class Trainer:
         for index, (images, prompts) in enumerate(dataloader):
             metrics = dict()
             data['step'] = index
-            self._move_to_device(tensors=[images, prompts])
+            images, prompts = self._move_to_device(tensors=[images, prompts])
             loss = self.model((images, prompts))
             if partition == 'train':
                 loss = self._train_step(loss=loss)
