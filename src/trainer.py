@@ -52,6 +52,7 @@ class Trainer:
             metrics['loss'] = loss
             data['metrics'].update(metrics)
             self.rprinter.print(data=data)
+            torch.cuda.empty_cache()
 
     def fit(self, epochs: int, train_loader: DataLoader) -> None:
         print('Start training StableDiffusion...')
