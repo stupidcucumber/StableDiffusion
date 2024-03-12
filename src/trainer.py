@@ -14,8 +14,11 @@ class Trainer:
         self.rprinter = Printer(formatter=DefaultFormatter(max_columns=1, precision=4))
         self.output_dir = output_dir
         self.device = device
+        self._setup_output_dir()
 
     def _setup_output_dir(self) -> None:
+        if self.output_dir.exists():
+            raise ValueError('%s already exists!' % self.output_dir)
         self.output_dir.mkdir(parents=False)
 
     def _train_step(self, loss) -> None:
