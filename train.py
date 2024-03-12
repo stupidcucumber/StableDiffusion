@@ -1,6 +1,7 @@
 import argparse, pathlib
 import pandas as pd
 import torch
+from torch.utils.data import DataLoader
 from src.model.diffusion import Pipeline
 from src.data import StableDiffusionDataset
 from src import Trainer
@@ -35,7 +36,8 @@ if __name__ == '__main__':
         data=data,
         tokenizer=model.tokenizer
     )
-    optimizer = torch.optim.Adam(params=model.parameters(), lr=0.01)
+    dataloader = DataLoader(dataset=dataset, shuffle=True, batch_size=args.batch_size)
+    optimizer = torch.optim.Adam(params=model.parameters(), lr=0.001)
     trainer = Trainer(
         model=model, 
         optimizer=optimizer,
