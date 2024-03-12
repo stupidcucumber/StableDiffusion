@@ -34,7 +34,8 @@ if __name__ == '__main__':
     model.to(args.device)
     data = pd.read_csv(str(args.data))
     dataset = StableDiffusionDataset(
-        data=data,
+        class_data=data[data['type'] == 'class'].reset_index(drop=True),
+        instance_data=data[data['type'] == 'instance'].reset_index(drop=True),
         tokenizer=model.tokenizer
     )
     dataloader = DataLoader(dataset=dataset, shuffle=True, batch_size=args.batch_size)
