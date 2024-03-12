@@ -7,12 +7,13 @@ from .model import Pipeline
 
 class Trainer:
     def __init__(self, model: Pipeline, optimizer: torch.optim,
-                 output_dir: pathlib.Path) -> None:
+                 output_dir: pathlib.Path, device: str = 'cpu') -> None:
         self.model = model
         self.model.eval()
         self.optimizer = optimizer
         self.rprinter = Printer(formatter=DefaultFormatter(max_columns=1, precision=4))
         self.output_dir = output_dir
+        self.device = device
 
     def _setup_output_dir(self) -> None:
         self.output_dir.mkdir(parents=False)
@@ -26,6 +27,10 @@ class Trainer:
     def _val_step(self, loss):
         self.model.eval()
         return loss
+    
+    def _move_to_device(self, tensors: list[torch.Tensor]) -> None:
+        for tensor in tensors:
+            tensor.to(self.device)
 
     def _epoch_pass(self, epoch: int, dataloader: DataLoader, partition: str = 'train') -> None:
         data = dict()
@@ -35,6 +40,7 @@ class Trainer:
         for index, (images, prompts) in enumerate(dataloader):
             metrics = dict()
             data['step'] = index
+            self._move_to_device(tensors=[images, prompts])
             loss = self.model((images, prompts))
             if partition == 'train':
                 loss = self._train_step(loss=loss)
