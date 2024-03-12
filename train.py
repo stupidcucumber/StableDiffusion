@@ -41,6 +41,7 @@ if __name__ == '__main__':
     trainer = Trainer(
         model=model, 
         optimizer=optimizer,
-        output_dir=args.output
+        output_dir=args.output,
+        device=args.device
     )
     trainer.fit(epochs=args.epochs, train_loader=dataloader)
