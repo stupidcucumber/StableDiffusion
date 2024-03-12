@@ -40,11 +40,14 @@ class Trainer:
         data['epoch'] = epoch
         data['partition'] = partition
         data['metrics'] = dict()
-        for index, (images, prompts) in enumerate(dataloader):
+        for index, (instance_images, instance_ids, class_images, class_ids) in enumerate(dataloader):
             metrics = dict()
             data['step'] = index
-            images, prompts = self._move_to_device(tensors=[images, prompts])
-            loss = self.model((images, prompts))
+
+            images = torch.stack([instance_images, class_images], dim=1)
+            prompt_ids = torch.stack([instance_ids, class_ids], dim=0)
+            images, prompt_ids = self._move_to_device(tensors=[images, prompt_ids])
+            loss = self.model((images, prompt_ids))
             if partition == 'train':
                 loss = self._train_step(loss=loss)
             else:

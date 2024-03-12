@@ -73,18 +73,13 @@ def get_target(scheduler, noise, latents, timesteps):
 
 
 def prior_preserving_loss(model_pred, target, weight) -> torch.Tensor:
-    # Chunk the noise and model_pred into two parts and compute
-    # the loss on each part separately.
     model_pred, model_pred_prior = torch.chunk(model_pred, 2, dim=0)
     target, target_prior = torch.chunk(target, 2, dim=0)
 
-    # Compute instance loss
-    loss = torch.functional.F.mse_loss(model_pred.float(), target.float(), reduction="mean")
-
-    # Compute prior loss
+    loss = torch.functional.F.mse_loss(
+        model_pred.float(), target.float(), reduction="mean"
+    )
     prior_loss = torch.functional.F.mse_loss(
         model_pred_prior.float(), target_prior.float(), reduction="mean"
     )
-
-    # Add the prior loss to the instance loss.
     return loss + weight * prior_loss
