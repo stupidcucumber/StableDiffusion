@@ -44,8 +44,11 @@ class Trainer:
             metrics = dict()
             data['step'] = index
 
-            images = torch.stack([instance_images, class_images], dim=1)
-            prompt_ids = torch.stack([instance_ids, class_ids], dim=0)
+            images = torch.cat([instance_images, class_images])
+            prompt_ids = torch.cat([instance_ids, class_ids])
+            print('Before size:', class_ids.shape, instance_ids.shape)
+            print('After size:', prompt_ids.shape)
+            print('Images size:', images.shape)
             images, prompt_ids = self._move_to_device(tensors=[images, prompt_ids])
             loss = self.model((images, prompt_ids))
             if partition == 'train':

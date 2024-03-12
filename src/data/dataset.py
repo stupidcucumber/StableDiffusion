@@ -42,7 +42,7 @@ class StableDiffusionDataset(Dataset):
         entry = dataframe.iloc[index % len(dataframe)]
         image_tensor = self.transform(Image.open(entry['image_path']))
         prompt_ids = self._tokenize(entry['prompt'])
-        return image_tensor, prompt_ids
+        return image_tensor, prompt_ids.squeeze()
 
     def __getitem__(self, index) -> tuple[torch.Tensor, np.ndarray]:
         _instance = \
