@@ -31,6 +31,7 @@ if __name__ == '__main__':
         config=args.config,
         device=args.device
     )
+    model.to(args.device)
     data = pd.read_csv(str(args.data))
     dataset = StableDiffusionDataset(
         data=data,
