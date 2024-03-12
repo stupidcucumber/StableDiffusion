@@ -55,11 +55,11 @@ class Pipeline(torch.nn.Module):
 
     def forward(self, input: tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
         '''
-            :input param: accepts tuple, where on the index 0 are placed tokenized prompts and
-        on the index 1 are placed processed images.
+            :input param: accepts tuple, where on the index 1 are placed tokenized prompts and
+        on the index 0 are placed processed images.
         '''
-        encoder_hidden_states = self.text_encoder(input[0])[0]
-        latents = self._to_latent(input[1])
+        encoder_hidden_states = self.text_encoder(input[1])[0]
+        latents = self._to_latent(input[0])
 
         noise = torch.randn_like(latents)
         timesteps = torch.randint(
