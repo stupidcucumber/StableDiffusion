@@ -29,9 +29,7 @@ class Trainer:
         return loss
     
     def _move_to_device(self, tensors: list[torch.Tensor]) -> list[torch.Tensor]:
-        for tensor in tensors:
-            tensor.to(self.device)
-        return tensors
+        return [tensor.to(self.device) for tensor in tensors]
 
     def _epoch_pass(self, epoch: int, dataloader: DataLoader, partition: str = 'train') -> None:
         data = dict()
