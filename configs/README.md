@@ -19,7 +19,7 @@ model-name:
   ...
 ```
 
-An example of a common Stable Diffusion Pipeline is located on the path `configs/default.yaml` that instantiates StableDiffusion-2 pipeline:
+An example of a common Stable Diffusion Pipeline is located on the path [`configs/default.yaml`](/configs/default.yaml) that instantiates StableDiffusion-2 pipeline:
 ```yaml
 stable-diffusion-2:
   vae:

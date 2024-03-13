@@ -1,4 +1,4 @@
-import cv2, torch
+import torch
 import numpy as np
 import pathlib, itertools
 from .utils import (
