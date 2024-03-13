@@ -24,11 +24,12 @@ _models = {
 }
 
 
-def _load_module(module_config: dict, device: str = 'cpu') -> torch.nn.Module:
+def _load_module(module_config: dict, device: str = 'cpu', dtype: torch.dtype = torch.bfloat16) -> torch.nn.Module:
     print('Start loading model %s' % module_config['classname'])
     model_class = _models[module_config['classname']]
     model = model_class.from_pretrained(module_config['hub'], 
-                                        subfolder=module_config['subfolder'])
+                                        subfolder=module_config['subfolder'],
+                                        torch_dtype=dtype)
     try:
         model.to(device)
     except Exception as e:
@@ -43,7 +44,7 @@ def _load_module(module_config: dict, device: str = 'cpu') -> torch.nn.Module:
     return model
 
 
-def load_models(config_path: pathlib.Path, device: str = 'cpu') -> dict[torch.nn.Module]:
+def load_models(config_path: pathlib.Path, device: str = 'cpu', dtype: torch.dtype = torch.bfloat16) -> dict[torch.nn.Module]:
     result = dict()
     with config_path.open() as config_f:
         config = yaml.safe_load(config_f)
@@ -52,7 +53,7 @@ def load_models(config_path: pathlib.Path, device: str = 'cpu') -> dict[torch.nn
     modules = config[result['model_name']]
     for module_name in modules.keys():
         module_config = modules[module_name]
-        result[module_name] = _load_module(module_config=module_config, device=device)
+        result[module_name] = _load_module(module_config=module_config, device=device, dtype=dtype)
     return result
 
 
