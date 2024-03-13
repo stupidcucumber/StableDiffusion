@@ -27,9 +27,15 @@ _models = {
 def _load_module(module_config: dict, device: str = 'cpu', dtype: torch.dtype = torch.bfloat16) -> torch.nn.Module:
     print('Start loading model %s' % module_config['classname'])
     model_class = _models[module_config['classname']]
-    model = model_class.from_pretrained(module_config['hub'], 
-                                        subfolder=module_config['subfolder'],
-                                        torch_dtype=dtype)
+    if module_config['storage'] == 'cloud':
+        model = model_class.from_pretrained(module_config['hub'], 
+                                            subfolder=module_config['subfolder'],
+                                            torch_dtype=dtype)
+    elif module_config['storage'] == 'local':
+        model = model_class.from_pretrained(module_config['path'])
+    else:
+        raise ValueError('Unknown storage type: %s' % module_config['storage'])
+
     try:
         model.to(device)
     except Exception as e:

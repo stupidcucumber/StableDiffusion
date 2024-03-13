@@ -7,9 +7,8 @@ stable-diffusion-2:
     train: false
   unet:
     classname: UNet2DConditionModel
-    storage: cloud
-    hub: stabilityai/stable-diffusion-2
-    subfolder: unet
+    storage: local
+    path: ./runs/run_0/unet.pt
     train: true
   scheduler:
     classname: DDIMScheduler
@@ -23,7 +22,6 @@ stable-diffusion-2:
     subfolder: tokenizer
   text_encoder: 
     classname: CLIPTextModel
-    storage: cloud
-    hub: stabilityai/stable-diffusion-2
-    subfolder: text_encoder
+    storage: local
+    path: ./runs/run_0/text_encoder.pt
     train: true
