@@ -14,6 +14,8 @@ def parse_arguments():
                         help='Path to the config of the generating model.')
     parser.add_argument('-d', '--device', type=str, default='cpu',
                         help='Device on which model and inputs will be located.')
+    parser.add_argument('-o', '--output', type=pathlib.Path, default=pathlib.Path('runs', 'output.png'),
+                        help='Output of the model.')
     return parser.parse_args()
 
 
@@ -27,4 +29,4 @@ if __name__ == '__main__':
     pipeline.to(args.device)
     generator = torch.Generator(args.device).manual_seed(0)
     image = pipeline(prompt=args.prompt, generator=generator).images[0]
-    print(image.save('output.png'))
+    print(image.save(args.output))
