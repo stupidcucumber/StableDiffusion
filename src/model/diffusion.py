@@ -44,8 +44,12 @@ class Pipeline(torch.nn.Module):
         return itertools.chain(self.unet.parameters(), self.text_encoder.parameters())
     
     def save(self, output_dir: pathlib.Path) -> None:
-        self.unet.save_pretrained(str(output_dir))
-        self.text_encoder.save_pretrained(str(output_dir))
+        unet_dir = output_dir.joinpath('unet')
+        text_encoder_dir = output_dir.joinpath('text_encoder')
+        unet_dir.mkdir()
+        text_encoder_dir.mkdir()
+        self.unet.save_pretrained(str(unet_dir))
+        self.text_encoder.save_pretrained(str(text_encoder_dir))
 
     def forward(self, input: tuple[torch.Tensor, torch.Tensor]) -> torch.Tensor:
         '''
