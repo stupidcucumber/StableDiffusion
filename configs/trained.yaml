@@ -8,7 +8,7 @@ stable-diffusion-2:
   unet:
     classname: UNet2DConditionModel
     storage: local
-    path: ./runs/run_0/unet.pt
+    path: runs/run_2/unet
     train: true
   scheduler:
     classname: DDIMScheduler
@@ -23,5 +23,5 @@ stable-diffusion-2:
   text_encoder: 
     classname: CLIPTextModel
     storage: local
-    path: ./runs/run_0/text_encoder.pt
+    path: runs/run_2/text_encoder
     train: true

@@ -32,7 +32,7 @@ def _load_module(module_config: dict, device: str = 'cpu', dtype: torch.dtype = 
                                             subfolder=module_config['subfolder'],
                                             torch_dtype=dtype)
     elif module_config['storage'] == 'local':
-        model = model_class.from_pretrained(module_config['path'])
+        model = model_class.from_pretrained(module_config['path'], torch_dtype=dtype)
     else:
         raise ValueError('Unknown storage type: %s' % module_config['storage'])
 
