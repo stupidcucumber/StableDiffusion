@@ -58,8 +58,10 @@ class Pipeline(torch.nn.Module):
             :input param: accepts tuple, where on the index 1 are placed tokenized prompts and
         on the index 0 are placed processed images.
         '''
-        encoder_hidden_states = self.text_encoder(input[1])[0]
-        latents = self._to_latent(input[0])
+        prompt_ids = input[1]
+        images = input[0].type(dtype=torch.bfloat16)
+        encoder_hidden_states = self.text_encoder(prompt_ids)[0]
+        latents = self._to_latent(images)
 
         noise = torch.randn_like(latents)
         timesteps = torch.randint(
