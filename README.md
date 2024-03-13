@@ -59,6 +59,8 @@ Then use generated data in training.
   -o OUTPUT_DIR, --output-dir OUTPUT_DIR
                         Output of the model.
 ```
+# Example
+TBD
 # :warning: TODO:
 Task name | Progress |
 ----------|----------|
