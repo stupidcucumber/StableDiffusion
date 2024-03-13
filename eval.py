@@ -27,7 +27,7 @@ def setup_output(dir_path: pathlib.Path) -> None:
 
 if __name__ == '__main__':
     args = parse_arguments()
-    setup_output(dir_path=args.output)
+    setup_output(dir_path=args.output_dir)
 
     model = Pipeline(config=args.config, device=args.device)
     pipeline = StableDiffusionPipeline(vae=model.vae, text_encoder=model.text_encoder, 
@@ -38,4 +38,4 @@ if __name__ == '__main__':
     generator = torch.Generator(args.device).manual_seed(0)
     for index in range(args.number):
         image = pipeline(prompt=args.prompt, generator=generator).images[0]
-        print(image.save(args.output.joinpath('generated_image_%d.png' % index)))
+        print(image.save(args.output_dir.joinpath('generated_image_%d.png' % index)))
