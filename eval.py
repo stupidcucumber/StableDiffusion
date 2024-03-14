@@ -30,6 +30,7 @@ if __name__ == '__main__':
     setup_output(dir_path=args.output_dir)
 
     model = Pipeline(config=args.config, device=args.device)
+    model.eval()
     pipeline = StableDiffusionPipeline(vae=model.vae, text_encoder=model.text_encoder, 
                                        tokenizer=model.tokenizer, unet=model.unet,
                                        scheduler=model.scheduler, safety_checker=None,
