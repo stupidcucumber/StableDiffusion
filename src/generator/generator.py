@@ -1,7 +1,7 @@
 import pathlib, torch
 import pandas as pd
 from diffusers import StableDiffusionPipeline
-from PIL import Image
+from PIL import Image, ImageOps
 
 
 class Generator: 
@@ -33,6 +33,7 @@ class Generator:
                 image = self.pipeline(prompt=prompt, generator=generator).images[0]
             else:
                 image = Image.open(input[index])
+                image = ImageOps.exif_transpose(image)
             save_path = output.joinpath('image_%d.png' % index)
             image.save(save_path)
             result.append({
